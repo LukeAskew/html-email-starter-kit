@@ -2,6 +2,7 @@
 var browserSync = require('browser-sync');
 var path = require('path');
 var gulp = require('gulp');
+var imagemin = require('gulp-imagemin');
 var inlineCss = require('gulp-inline-css');
 var minifyHTML = require('gulp-minify-html');
 var plumber = require('gulp-plumber');
@@ -16,7 +17,8 @@ var config = {
 	dev: true,
 	src: {
 		emails: 'src/emails/*.html',
-		styles: 'src/styles/**/*.scss'
+		styles: 'src/styles/**/*.scss',
+		images: 'src/images/**/*'
 	},
 	dest: 'public/'
 };
@@ -43,6 +45,14 @@ gulp.task('styles', function () {
 		}))
 		.pipe(prefix('last 1 version'))
 		.pipe(gulp.dest(config.dest + '/styles'));
+});
+
+
+// images
+gulp.task('images', function () {
+	return gulp.src(config.src.images)
+		.pipe(imagemin())
+		.pipe(gulp.dest(config.dest + '/images'));
 });
 
 
@@ -75,16 +85,17 @@ gulp.task('browser-sync', function () {
 gulp.task('watch', ['browser-sync'], function () {
 	gulp.watch(config.src.emails, ['assemble', browserSync.reload]);
 	gulp.watch(config.src.styles, ['assemble', browserSync.reload]);
+	gulp.watch(config.src.images, ['images', browserSync.reload]);
 });
 
 
 gulp.task('dev', ['setup', 'watch'], function () {
-	runSequence('assemble');
+	runSequence('images', 'assemble');
 });
 
 
 // default task
 gulp.task('default', ['setup'], function () {
 	config.dev = false;
-	runSequence('assemble', 'teardown');
+	runSequence('images', 'assemble', 'teardown');
 });
