@@ -2,6 +2,7 @@
   "name": "email-starter-kit",
   "version": "0.1.0",
   "description": "Kick-start your HTML email development",
+  "homepage": "https://github.com/LukeAskew/html-email-starter-kit",
   "main": "gulpfile.js",
   "scripts": {
     "dev": "npm install && gulp dev",
@@ -12,6 +13,10 @@
     "email",
     "gulp"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LukeAskew/html-email-starter-kit.git"
+  },
   "author": "Luke Askew",
   "license": "MIT",
   "devDependencies": {
