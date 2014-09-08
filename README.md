@@ -5,8 +5,9 @@
 ## Features
 
 - Live preview development environment
-- Automatic Sass compilation and CSS inlining
-- Responsive boilerplate
+- Automatic Sass compilation and CSS inlining (via [Juice](https://github.com/andrewrk/juice))
+- Responsive boilerplate (based on [HTML Email Boilerplate](https://github.com/seanpowell/Email-Boilerplate))
+- HTML and Image optimization
 
 ## Usage
 

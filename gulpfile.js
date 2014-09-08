@@ -1,8 +1,9 @@
-
 // modules
 var browserSync = require('browser-sync');
+var path = require('path');
 var gulp = require('gulp');
 var inlineCss = require('gulp-inline-css');
+var minifyHTML = require('gulp-minify-html');
 var plumber = require('gulp-plumber');
 var prefix = require('gulp-autoprefixer');
 var rimraf = require('gulp-rimraf');
@@ -19,6 +20,7 @@ var config = {
 	},
 	dest: 'public/'
 };
+
 
 // setup/teardown
 gulp.task('setup', function () {
@@ -49,7 +51,11 @@ gulp.task('assemble', ['styles'], function () {
 	return gulp.src(config.src.emails)
 		.pipe(plumber())
 		.pipe(inlineCss({
-			url: 'http://localhost:3000/'
+			url: 'file:\\\\' + __dirname + '/public/',
+			preserveMediaQueries: true
+		}))
+		.pipe(minifyHTML({
+			quotes: true
 		}))
 		.pipe(gulp.dest(config.dest));
 });
@@ -72,7 +78,7 @@ gulp.task('watch', ['browser-sync'], function () {
 });
 
 
-gulp.task('dev', ['watch'], function () {
+gulp.task('dev', ['setup', 'watch'], function () {
 	runSequence('assemble');
 });
 

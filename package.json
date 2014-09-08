@@ -19,6 +19,7 @@
     "gulp": "^3.8.8",
     "gulp-autoprefixer": "^1.0.0",
     "gulp-inline-css": "^1.0.0",
+    "gulp-minify-html": "^0.1.5",
     "gulp-plumber": "^0.6.5",
     "gulp-rimraf": "^0.1.0",
     "gulp-sass": "^0.7.3",
