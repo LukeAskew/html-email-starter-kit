@@ -89,8 +89,8 @@ gulp.task('watch', ['browser-sync'], function () {
 });
 
 
-gulp.task('dev', ['setup', 'watch'], function () {
-	runSequence('images', 'assemble');
+gulp.task('dev', ['setup'], function () {
+	runSequence('images', 'assemble', 'watch');
 });
 
 
