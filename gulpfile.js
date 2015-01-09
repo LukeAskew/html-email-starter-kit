@@ -1,45 +1,42 @@
 // modules
 var browserSync = require('browser-sync');
-var path = require('path');
+var del = require('del');
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var imagemin = require('gulp-imagemin');
 var inlineCss = require('gulp-inline-css');
 var minifyHTML = require('gulp-minify-html');
-var plumber = require('gulp-plumber');
+var path = require('path');
 var prefix = require('gulp-autoprefixer');
-var rimraf = require('gulp-rimraf');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
 
 
 // config
 var config = {
-	dev: true,
+	dev: gutil.env.dev,
 	src: {
 		emails: 'src/emails/*.html',
 		styles: 'src/styles/**/*.scss',
 		images: 'src/images/**/*'
 	},
-	dest: 'public/'
+	dest: 'dist'
 };
 
 
 // setup/teardown
-gulp.task('setup', function () {
-	return gulp.src(config.dest, { read: false })
-		.pipe(rimraf({ force: true }));
+gulp.task('setup', function (cb) {
+	del([config.dest], cb);
 });
 
-gulp.task('teardown', function () {
-	return gulp.src(config.dest + '/styles', { read: false })
-		.pipe(rimraf({ force: true }));
+gulp.task('teardown', function (cb) {
+	del([config.dest + '/styles'], cb);
 });
 
 
 // styles
 gulp.task('styles', function () {
 	return gulp.src(config.src.styles)
-		.pipe(plumber())
 		.pipe(sass({
 			errLogToConsole: true
 		}))
@@ -59,9 +56,7 @@ gulp.task('images', function () {
 // assemble
 gulp.task('assemble', ['styles'], function () {
 	return gulp.src(config.src.emails)
-		.pipe(plumber())
 		.pipe(inlineCss({
-			url: 'file:\\\\' + __dirname + '/public/',
 			preserveMediaQueries: true
 		}))
 		.pipe(minifyHTML({
@@ -88,14 +83,13 @@ gulp.task('watch', ['browser-sync'], function () {
 	gulp.watch(config.src.images, ['images', browserSync.reload]);
 });
 
-
-gulp.task('dev', ['setup'], function () {
-	runSequence('images', 'assemble', 'watch');
-});
-
-
 // default task
 gulp.task('default', ['setup'], function () {
-	config.dev = false;
-	runSequence('images', 'assemble', 'teardown');
+	runSequence('images', 'assemble', function () {
+		if (config.dev) {
+			gulp.start('watch');
+		} else {
+			gulp.start('teardown');
+		}
+	});
 });

@@ -13,11 +13,11 @@
 
 Start the development environment:
 
-`$ npm run dev`
+`$ npm start`
 
 Build for production release:
 
-`$ npm run prod`
+`$ npm run build`
 
 ## License
 
