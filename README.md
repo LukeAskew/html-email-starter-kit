@@ -11,6 +11,12 @@
 
 ## Usage
 
+Copy repo:
+
+```shell
+$ curl -L https://github.com/lukeaskew/html-email-starter-kit/archive/master.tar.gz | tar zx --strip 1
+```
+
 Start the development environment:
 
 ```
